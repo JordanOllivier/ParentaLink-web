@@ -3,1410 +3,1794 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ParentaLink - Votre famille, mieux organisée</title>
-  <meta name="description" content="ParentaLink aide toutes les familles à s'organiser : calendrier partagé, dépenses, documents et règles éducatives — synchronisés en temps réel pour chaque membre de la famille.">
-  <meta property="og:title" content="ParentaLink - Votre famille, mieux organisée">
-  <meta property="og:description" content="L'application qui aide toutes les familles à s'organiser. Calendrier partagé, dépenses, documents et règles éducatives en un seul endroit, synchronisés pour tous les membres.">
+  <title>ParentaLink — La famille, sans la charge mentale</title>
+  <meta name="description" content="ParentaLink est l'app qui aide les familles à coordonner leur quotidien : calendrier, garde, dépenses, documents, règles. Disponible sur Google Play, bientôt sur l'App Store.">
+  <meta property="og:title" content="ParentaLink — La famille, sans la charge mentale">
+  <meta property="og:description" content="L'app qui aide les familles à coordonner leur quotidien — pour toutes les configurations de foyer.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://parentalink.fr">
-  <meta name="theme-color" content="#4A90E2">
+  <meta name="theme-color" content="#FFFFFF">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* ─── Reset & Tokens ─────────────────────────────────────────── */
+    /* ─── Reset ──────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     :root {
-      --coral:      #4A90E2;
-      --coral-dark: #1976D2;
-      --coral-light:#64B5F6;
-      --amber:      #7ED321;
-      --cream:      #F5F7FA;
-      --sand:       #E3F2FD;
-      --stone:      #BBDEFB;
-      --ink:        #212121;
-      --ink-soft:   #37474F;
-      --ink-muted:  #607D8B;
-      --white:      #FFFFFF;
+      /* App brand */
+      --blue:        #4A90E2;
+      --blue-deep:   #1E6FCB;
+      --blue-soft:   #EAF3FC;
+      --green:       #7ED321;
+      --green-deep:  #5BA013;
+      --green-soft:  #F0F9E1;
+      --amber:       #F5A623;
 
-      --font-display: 'Playfair Display', Georgia, serif;
-      --font-body:    'Plus Jakarta Sans', -apple-system, sans-serif;
+      /* Surface — clean white + subtle nuance */
+      --bg:          #FFFFFF;
+      --bg-2:        #F6F6F4;
+      --bg-3:        #ECECEA;
+      --ink:         #0E0E0C;
+      --ink-soft:    #2A2A28;
+      --ink-muted:   #6E6E68;
+      --ink-light:   #ABABA5;
+      --line:        #E5E5E0;
+      --line-soft:   #EFEFEC;
 
-      --radius-sm: 10px;
-      --radius-md: 18px;
-      --radius-lg: 28px;
-      --radius-xl: 40px;
+      /* Type */
+      --font-display: 'Bricolage Grotesque', -apple-system, sans-serif;
+      --font-body:    'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono:    'Geist Mono', ui-monospace, monospace;
 
-      --shadow-sm: 0 2px 8px rgba(28,16,8,.07);
-      --shadow-md: 0 8px 32px rgba(28,16,8,.10);
-      --shadow-lg: 0 20px 60px rgba(28,16,8,.13);
-
-      --max-w: 1160px;
-      --section-py: 96px;
+      --max-w:        1280px;
+      --gutter:       40px;
     }
-
-    html { scroll-behavior: smooth; }
 
     body {
       font-family: var(--font-body);
-      background: var(--cream);
+      background: var(--bg);
       color: var(--ink);
-      line-height: 1.65;
+      line-height: 1.5;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ─── Typography helpers ─────────────────────────────────────── */
-    .display {
-      font-family: var(--font-display);
-      font-weight: 700;
-      line-height: 1.12;
-      letter-spacing: -.02em;
-    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font: inherit; cursor: pointer; border: none; background: none; }
+    ::selection { background: var(--ink); color: var(--bg); }
 
-    .label {
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--coral);
-    }
-
-    /* ─── Layout helpers ─────────────────────────────────────────── */
-    .container {
+    .wrap {
       max-width: var(--max-w);
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 var(--gutter);
     }
 
-    .section { padding: var(--section-py) 0; }
-
-    /* ─── Animations ─────────────────────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(.94); }
-      to   { opacity: 1; transform: scale(1); }
-    }
-    @keyframes floatA {
-      0%,100% { transform: translateY(0px) rotate(0deg); }
-      50%      { transform: translateY(-14px) rotate(2deg); }
-    }
-    @keyframes floatB {
-      0%,100% { transform: translateY(0px) rotate(0deg); }
-      50%      { transform: translateY(-9px) rotate(-1.5deg); }
-    }
-    @keyframes shimmer {
-      0%   { background-position: -400px 0; }
-      100% { background-position: 400px 0; }
+    /* ─── Type system ────────────────────────────────────────── */
+    .display {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-variation-settings: "opsz" 96;
+      letter-spacing: -0.035em;
+      line-height: 0.96;
+      color: var(--ink);
     }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity .65s cubic-bezier(.22,1,.36,1), transform .65s cubic-bezier(.22,1,.36,1);
+    .mono {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-scale {
-      opacity: 0;
-      transform: scale(.94);
-      transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);
-    }
-    .reveal-scale.visible {
-      opacity: 1;
-      transform: scale(1);
-    }
-    .delay-1 { transition-delay: .08s; }
-    .delay-2 { transition-delay: .16s; }
-    .delay-3 { transition-delay: .24s; }
-    .delay-4 { transition-delay: .32s; }
-    .delay-5 { transition-delay: .40s; }
-    .delay-6 { transition-delay: .48s; }
-    .delay-7 { transition-delay: .56s; }
-    .delay-8 { transition-delay: .64s; }
 
-    /* ─── Navbar ─────────────────────────────────────────────────── */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: .73rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 22px; height: 1px;
+      background: var(--ink-muted);
+    }
+
+    /* ─── Top status bar ─────────────────────────────────────── */
+    .status-bar {
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 9px 0;
+      text-align: center;
+      position: relative;
+      z-index: 90;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-right: 10px;
+      vertical-align: middle;
+      box-shadow: 0 0 0 0 rgba(126,211,33,.55);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(126,211,33,.55); }
+      50%      { box-shadow: 0 0 0 8px rgba(126,211,33,0); }
+    }
+    .status-bar a {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      margin-left: 6px;
+    }
+
+    /* ─── Nav ────────────────────────────────────────────────── */
     .nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 0 24px;
-      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .25s ease;
+    }
+    .nav.is-stuck { border-bottom-color: var(--line); }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 14px var(--gutter);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(245,247,250,.9);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid transparent;
-      transition: border-color .3s, box-shadow .3s;
+      gap: 32px;
     }
-    .nav.scrolled {
-      border-bottom-color: var(--stone);
-      box-shadow: 0 1px 20px rgba(28,16,8,.06);
-    }
-
-    .nav-logo {
-      text-decoration: none;
-      opacity: 0;
-      transform: translateY(-8px);
-      transition: opacity .4s ease, transform .4s ease;
-      pointer-events: none;
-    }
-    .nav-logo img { height: 50px; display: block; }
-    .nav.scrolled .nav-logo {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .nav-links {
+    .nav-brand {
       display: flex;
       align-items: center;
-      gap: 32px;
+      gap: 10px;
+    }
+    .nav-mark { width: 34px; height: 34px; flex-shrink: 0; }
+    .nav-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-variation-settings: "opsz" 24;
+      font-size: 1.2rem;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
       list-style: none;
     }
     .nav-links a {
+      font-size: .92rem;
+      color: var(--ink-soft);
+      transition: color .15s ease;
+      font-weight: 450;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    .nav-cta-group { display: flex; align-items: center; gap: 10px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
       font-size: .9rem;
       font-weight: 500;
-      color: var(--ink-muted);
-      text-decoration: none;
-      transition: color .2s;
+      transition: transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
+      border: 1px solid transparent;
+      white-space: nowrap;
     }
-    .nav-links a:hover { color: var(--coral); }
+    .btn-ink { background: var(--ink); color: var(--bg); }
+    .btn-ink:hover { background: var(--blue-deep); transform: translateY(-1px); }
+    .btn-line { border-color: var(--line); color: var(--ink-soft); background: var(--bg); }
+    .btn-line:hover { border-color: var(--ink); color: var(--ink); }
 
-    .nav-cta {
-      background: var(--coral) !important;
-      color: var(--white) !important;
-      padding: 9px 20px;
-      border-radius: 50px;
-      font-weight: 600 !important;
-      font-size: .85rem !important;
-      transition: background .2s, transform .2s !important;
-    }
-    .nav-cta:hover {
-      background: var(--coral-dark) !important;
-      transform: translateY(-1px);
-    }
-
-    .nav-hamburger {
+    .nav-burger {
       display: none;
+      width: 38px; height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
       flex-direction: column;
-      gap: 5px;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0;
       cursor: pointer;
-      padding: 6px;
     }
-    .nav-hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
+    .nav-burger span {
+      width: 16px; height: 1.5px;
       background: var(--ink);
       border-radius: 2px;
-      transition: transform .3s, opacity .3s;
     }
 
-    .hero-logo {
-      width: 100%;
-      max-width: 500px;
-      margin-left: -20px;
-      margin-bottom: 32px;
-      display: block;
-      animation: fadeUp .8s cubic-bezier(.22,1,.36,1) both;
-    }
-    @media (max-width: 900px) {
-      .hero-logo { max-width: 360px; margin: 0 auto 24px; }
-    }
-    @media (max-width: 600px) {
-      .hero-logo { max-width: 300px; margin: 0 auto 20px; }
-    }
-
-    /* ─── Hero ───────────────────────────────────────────────────── */
+    /* ─── Hero ───────────────────────────────────────────────── */
     .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 120px 24px 80px;
       position: relative;
+      padding: 80px 0 100px;
       overflow: hidden;
     }
 
-    /* Warm gradient blob backgrounds */
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -120px; right: -180px;
-      width: 700px; height: 700px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(74,144,226,.14) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -80px; left: -100px;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(126,211,33,.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      width: 100%;
+    .hero-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      gap: 80px;
       align-items: center;
     }
 
-    .hero-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(74,144,226,.1);
-      border: 1px solid rgba(74,144,226,.2);
-      border-radius: 50px;
-      padding: 6px 14px;
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--coral);
-      margin-bottom: 24px;
-      animation: fadeUp .6s cubic-bezier(.22,1,.36,1) both;
+    .hero-text > .eyebrow { margin-bottom: 32px; }
+
+    .hero-h1 {
+      font-size: clamp(3.2rem, 8vw, 6.8rem);
+      margin-bottom: 32px;
+      font-variation-settings: "opsz" 96;
     }
-    .hero-label::before {
+    .hero-h1 .accent {
+      display: inline-block;
+      color: var(--blue-deep);
+      position: relative;
+    }
+    .hero-h1 .accent::after {
       content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--coral);
-      animation: shimmer 2s infinite;
+      position: absolute;
+      bottom: 0.05em; left: 0; right: 0;
+      height: 0.08em;
+      background: var(--blue);
+      opacity: .35;
+      transform: scaleY(.6);
+      transform-origin: bottom;
     }
 
-    .hero-title {
-      font-size: clamp(2.4rem, 5vw, 3.8rem);
-      margin-bottom: 24px;
-      animation: fadeUp .7s .1s cubic-bezier(.22,1,.36,1) both;
-    }
-    .hero-title em {
-      font-style: italic;
-      color: var(--coral);
-    }
-
-    .hero-sub {
-      font-size: 1.1rem;
-      color: var(--ink-muted);
-      max-width: 460px;
-      margin-bottom: 40px;
-      line-height: 1.7;
-      animation: fadeUp .7s .18s cubic-bezier(.22,1,.36,1) both;
+    .hero-lede {
+      font-size: 1.18rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 540px;
+      margin-bottom: 44px;
+      font-weight: 400;
     }
 
-    .hero-actions {
+    .stores {
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
-      animation: fadeUp .7s .26s cubic-bezier(.22,1,.36,1) both;
+      gap: 12px;
+      align-items: stretch;
     }
 
-    .btn-primary {
+    .store {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: var(--coral);
-      color: var(--white);
+      gap: 12px;
+      padding: 12px 20px 12px 16px;
+      background: var(--ink);
+      color: var(--bg);
+      border-radius: 14px;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 6px 16px -8px rgba(14,14,12,.35);
+      border: 1px solid var(--ink);
+    }
+    .store:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -10px rgba(14,14,12,.45);
+    }
+    .store-meta {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+      text-align: left;
+    }
+    .store-meta .small {
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: .6;
+      margin-bottom: 3px;
+    }
+    .store-meta .big {
       font-family: var(--font-body);
       font-size: 1rem;
       font-weight: 600;
-      padding: 15px 30px;
-      border-radius: 50px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: background .2s, transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 20px rgba(74,144,226,.35);
     }
-    .btn-primary:hover {
-      background: var(--coral-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(74,144,226,.40);
-    }
-    .btn-primary svg { flex-shrink: 0; }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
+    .store.is-soon {
+      background: var(--bg);
       color: var(--ink);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 15px 24px;
-      border-radius: 50px;
-      text-decoration: none;
-      border: 1.5px solid var(--stone);
-      cursor: pointer;
-      transition: border-color .2s, color .2s, transform .2s;
+      border-color: var(--line);
+      box-shadow: none;
+      cursor: default;
     }
-    .btn-secondary:hover {
-      border-color: var(--coral);
-      color: var(--coral);
-      transform: translateY(-1px);
+    .store.is-soon:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: var(--ink-light);
     }
 
-    /* Hero visual - two homes metaphor */
-    .hero-visual {
+    /* Hero — phone showcase */
+    .hero-art {
       position: relative;
-      height: 480px;
-      animation: scaleIn .8s .3s cubic-bezier(.22,1,.36,1) both;
-    }
-
-    .hero-card {
-      position: absolute;
-      background: var(--white);
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-md);
-      padding: 20px;
-      border: 1px solid rgba(74,144,226,.08);
-    }
-
-    .hero-card-main {
-      width: 280px;
-      top: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: floatA 6s ease-in-out infinite;
-    }
-
-    .hero-card-b {
-      width: 200px;
-      bottom: 60px;
-      left: 0;
-      animation: floatB 7s .5s ease-in-out infinite;
-    }
-
-    .hero-card-c {
-      width: 180px;
-      bottom: 80px;
-      right: 0;
-      animation: floatA 8s 1s ease-in-out infinite;
-    }
-
-    /* Mini UI card content */
-    .card-header-row {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    .card-icon-wrap {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
+      min-height: 640px;
     }
-    .card-icon-wrap.coral { background: rgba(74,144,226,.12); }
-    .card-icon-wrap.amber { background: rgba(126,211,33,.12); }
-    .card-icon-wrap.green { background: rgba(52,168,83,.12); }
-    .card-icon-wrap.blue  { background: rgba(66,133,244,.12); }
 
-    .card-badge {
-      font-size: .65rem;
-      font-weight: 700;
-      padding: 3px 10px;
+    .phone {
+      position: relative;
+      width: 320px;
+      height: 660px;
+      background: linear-gradient(160deg, #0c0c0c, #2a2a2a);
       border-radius: 50px;
+      padding: 11px;
+      box-shadow:
+        0 50px 90px -30px rgba(14,14,12,.3),
+        0 18px 40px -20px rgba(14,14,12,.16),
+        inset 0 1px 0 rgba(255,255,255,.06);
+      transition: transform .4s cubic-bezier(.22,1,.36,1);
     }
-    .badge-green { background: rgba(52,168,83,.12); color: #34A853; }
-    .badge-amber { background: rgba(126,211,33,.14); color: #558B2F; }
+    .phone-2 {
+      position: absolute;
+      width: 270px;
+      height: 555px;
+      bottom: 30px;
+      left: -40px;
+      transform: rotate(-8deg);
+      z-index: -1;
+      opacity: .8;
+      filter: brightness(.95);
+    }
+    .phone-2 .phone-screen { background: var(--ink); }
 
-    .card-title { font-size: .8rem; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-    .card-sub   { font-size: .7rem; color: var(--ink-muted); }
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-2);
+      border-radius: 39px;
+      overflow: hidden;
+      position: relative;
+    }
 
-    .mini-calendar {
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+
+    /* Notch only shown for placeholder fallback (real screenshots will include it or not) */
+    .phone-fallback .phone-notch {
+      position: absolute;
+      top: 8px; left: 50%;
+      transform: translateX(-50%);
+      width: 88px; height: 22px;
+      background: #0a0a0a;
+      border-radius: 999px;
+      z-index: 5;
+    }
+
+    /* CSS-rendered fallback (used if image fails to load) */
+    .phone-fallback .fb-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 22px 0;
+      font-family: var(--font-body);
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .phone-fallback .fb-app {
+      padding: 32px 16px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      height: 100%;
+    }
+    .phone-fallback .fb-app h4 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-variation-settings: "opsz" 24;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .phone-fallback .fb-meta {
+      font-family: var(--font-mono);
+      font-size: .58rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+    .phone-fallback .fb-week {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 3px;
-      margin-top: 12px;
     }
-    .cal-day {
-      aspect-ratio: 1;
-      border-radius: 5px;
-      font-size: .6rem;
-      font-weight: 600;
+    .phone-fallback .fb-cell {
+      aspect-ratio: .85;
+      border-radius: 7px;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--ink-muted);
-    }
-    .cal-day.a { background: rgba(74,144,226,.15); color: var(--coral); }
-    .cal-day.b { background: rgba(66,133,244,.12); color: #4285F4; }
-    .cal-day.today { background: var(--coral); color: white; }
-
-    .expense-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--sand);
-    }
-    .expense-row:last-child { border-bottom: none; }
-    .exp-label { font-size: .72rem; font-weight: 500; color: var(--ink); }
-    .exp-amount { font-size: .72rem; font-weight: 700; color: var(--coral); }
-
-    .progress-label { font-size: .7rem; color: var(--ink-muted); margin-bottom: 6px; }
-    .progress-track {
-      height: 6px;
-      background: var(--sand);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--coral), var(--amber));
-      border-radius: 3px;
-    }
-
-    .notif-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 8px 0;
-    }
-    .notif-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      margin-top: 5px;
-      flex-shrink: 0;
-    }
-    .notif-text { font-size: .7rem; color: var(--ink-soft); line-height: 1.4; }
-    .notif-time { font-size: .62rem; color: var(--ink-muted); }
-
-    /* ─── Pain points ────────────────────────────────────────────── */
-    .pain-section {
-      background: var(--ink);
-      color: var(--white);
-      padding: var(--section-py) 0;
-    }
-
-    .pain-header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
-    .pain-header .label { color: rgba(74,144,226,.9); }
-    .pain-header h2 {
-      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
-      color: var(--white);
-      margin-top: 12px;
-    }
-
-    .pain-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2px;
-    }
-
-    .pain-card {
-      padding: 40px 36px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.06);
-      transition: background .3s;
-    }
-    .pain-card:hover { background: rgba(255,255,255,.07); }
-    .pain-card:first-child { border-radius: var(--radius-md) 0 0 0; }
-    .pain-card:nth-child(2) { border-radius: 0 var(--radius-md) 0 0; }
-    .pain-card:nth-child(3) { border-radius: 0 0 0 var(--radius-md); }
-    .pain-card:last-child { border-radius: 0 0 var(--radius-md) 0; }
-
-    .pain-icon {
-      width: 48px; height: 48px;
-      border-radius: 14px;
-      background: rgba(74,144,226,.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .pain-card h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--white);
-      margin-bottom: 10px;
-    }
-    .pain-card p {
-      font-size: .9rem;
-      color: rgba(255,255,255,.55);
-      line-height: 1.65;
-    }
-
-    /* ─── Features ───────────────────────────────────────────────── */
-    .features-section { padding: var(--section-py) 0; background: var(--cream); }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 64px;
-    }
-    .section-header h2 {
-      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
-      margin-top: 12px;
-    }
-    .section-header p {
-      margin-top: 16px;
-      font-size: 1.05rem;
-      color: var(--ink-muted);
-      max-width: 540px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .feature-card {
-      background: var(--white);
-      border-radius: var(--radius-md);
-      padding: 32px 28px;
-      border: 1px solid var(--stone);
-      transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, border-color .25s;
-    }
-    .feature-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-md);
-      border-color: rgba(74,144,226,.15);
-    }
-
-    .feature-icon {
-      width: 52px; height: 52px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .fi-coral  { background: rgba(74,144,226,.1); }
-    .fi-amber  { background: rgba(126,211,33,.12); }
-    .fi-green  { background: rgba(52,168,83,.10); }
-    .fi-blue   { background: rgba(66,133,244,.10); }
-    .fi-purple { background: rgba(156,106,222,.10); }
-    .fi-teal   { background: rgba(0,172,193,.10); }
-    .fi-rose   { background: rgba(236,72,153,.10); }
-    .fi-slate  { background: rgba(100,116,139,.10); }
-
-    .feature-card h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: var(--ink);
-    }
-    .feature-card p {
-      font-size: .88rem;
-      color: var(--ink-muted);
-      line-height: 1.65;
-    }
-
-    .feature-tag {
-      display: inline-block;
-      margin-top: 14px;
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: var(--coral);
-      background: rgba(74,144,226,.08);
-      padding: 4px 10px;
-      border-radius: 50px;
-    }
-
-    /* ─── For Who ────────────────────────────────────────────────── */
-    .forwhom-section {
-      padding: var(--section-py) 0;
-      background: linear-gradient(160deg, var(--sand) 0%, var(--cream) 100%);
-    }
-
-    .forwhom-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 56px;
-    }
-
-    .persona-card {
-      background: var(--white);
-      border-radius: var(--radius-lg);
-      padding: 40px 32px;
-      text-align: center;
-      border: 1px solid var(--stone);
-      transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s;
-      position: relative;
-      overflow: hidden;
-    }
-    .persona-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--coral), var(--amber));
-      opacity: 0;
-      transition: opacity .25s;
-    }
-    .persona-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-md);
-    }
-    .persona-card:hover::before { opacity: 1; }
-
-    .persona-avatar {
-      width: 72px; height: 72px;
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--sand);
-    }
-
-    .persona-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--ink);
-    }
-    .persona-card p {
-      font-size: .88rem;
-      color: var(--ink-muted);
-      line-height: 1.65;
-    }
-
-    /* ─── Stats ──────────────────────────────────────────────────── */
-    .stats-section {
-      padding: var(--section-py) 0;
-      background: var(--white);
-    }
-
-    .stats-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-
-    .stats-text h2 {
-      font-size: clamp(1.7rem, 3vw, 2.5rem);
-      margin-bottom: 20px;
-    }
-    .stats-text p {
-      font-size: 1rem;
-      color: var(--ink-muted);
-      line-height: 1.7;
-      margin-bottom: 14px;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .stat-card {
-      background: var(--cream);
-      border-radius: var(--radius-md);
-      padding: 28px 24px;
-      border: 1px solid var(--stone);
-    }
-
-    .stat-number {
-      font-family: var(--font-display);
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: var(--coral);
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-    .stat-label {
-      font-size: .85rem;
-      color: var(--ink-muted);
-      line-height: 1.4;
-    }
-
-    /* ─── CTA Section ────────────────────────────────────────────── */
-    .cta-section {
-      padding: var(--section-py) 0;
-      background: var(--cream);
-    }
-
-    .cta-box {
-      background: var(--ink);
-      border-radius: var(--radius-xl);
-      padding: 72px 56px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-box::before {
-      content: '';
-      position: absolute;
-      top: -200px; right: -100px;
-      width: 500px; height: 500px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(74,144,226,.25) 0%, transparent 60%);
-    }
-    .cta-box::after {
-      content: '';
-      position: absolute;
-      bottom: -150px; left: -80px;
-      width: 400px; height: 400px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(126,211,33,.15) 0%, transparent 60%);
-    }
-
-    .cta-box > * { position: relative; z-index: 1; }
-
-    .cta-box .label { color: rgba(74,144,226,.9); }
-    .cta-box h2 {
-      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
-      color: var(--white);
-      margin: 16px 0 20px;
-    }
-    .cta-box p {
-      font-size: 1.05rem;
-      color: rgba(255,255,255,.6);
-      max-width: 500px;
-      margin: 0 auto 36px;
-      line-height: 1.7;
-    }
-
-    .cta-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      justify-content: center;
-    }
-
-    .btn-white {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--white);
-      color: var(--ink);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 15px 30px;
-      border-radius: 50px;
-      text-decoration: none;
-      transition: transform .2s, box-shadow .2s;
-      box-shadow: 0 4px 20px rgba(0,0,0,.2);
-    }
-    .btn-white:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,0,0,.25);
-    }
-
-    .btn-outline-white {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: transparent;
-      color: rgba(255,255,255,.8);
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 15px 24px;
-      border-radius: 50px;
-      text-decoration: none;
-      border: 1.5px solid rgba(255,255,255,.25);
-      transition: border-color .2s, color .2s;
-    }
-    .btn-outline-white:hover {
-      border-color: rgba(255,255,255,.6);
-      color: var(--white);
-    }
-
-    .cta-note {
-      margin-top: 20px;
-      font-size: .8rem;
-      color: rgba(255,255,255,.35);
-    }
-    .cta-note strong { color: rgba(74,144,226,.7); }
-
-    /* ─── Footer ─────────────────────────────────────────────────── */
-    .footer {
-      background: var(--white);
-      color: var(--ink-muted);
-      border-top: 1px solid var(--stone);
-      padding: 40px 24px;
-    }
-    .footer-inner {
-      max-width: var(--max-w);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .footer-logo {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: rgba(255,255,255,.7);
-    }
-    .footer-logo span { color: var(--coral); }
-    .footer-links {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
-    .footer-links a {
-      font-size: .85rem;
-      color: var(--ink-muted);
-      text-decoration: none;
-      transition: color .2s;
-    }
-    .footer-links a:hover { color: var(--coral); }
-    .footer-copy { font-size: .8rem; }
-
-    /* ─── Mobile Nav overlay ─────────────────────────────────────── */
-    .nav-mobile-menu {
-      display: none;
-      position: fixed;
-      top: 64px; left: 0; right: 0; bottom: 0;
-      background: rgba(245,247,250,.97);
-      backdrop-filter: blur(16px);
-      z-index: 99;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 32px;
+      gap: 2px;
+      position: relative;
     }
-    .nav-mobile-menu.open { display: flex; }
-    .nav-mobile-menu a {
-      font-size: 1.4rem;
+    .phone-fallback .fb-cell .d {
+      font-family: var(--font-mono);
+      font-size: .5rem;
+      color: var(--ink-light);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .phone-fallback .fb-cell .n {
+      font-family: var(--font-body);
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+    .phone-fallback .fb-cell.is-today { background: var(--ink); }
+    .phone-fallback .fb-cell.is-today .d,
+    .phone-fallback .fb-cell.is-today .n { color: var(--bg); }
+    .phone-fallback .fb-cell .marker {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 4px;
+    }
+    .phone-fallback .fb-event {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid var(--line-soft);
+    }
+    .phone-fallback .fb-event-bar {
+      width: 3px; height: 26px;
+      border-radius: 2px;
+    }
+    .phone-fallback .fb-event-meta { flex: 1; min-width: 0; }
+    .phone-fallback .fb-event-time {
+      font-family: var(--font-mono);
+      font-size: .55rem;
+      letter-spacing: 0.04em;
+      color: var(--ink-muted);
+      font-weight: 500;
+      margin-bottom: 1px;
+    }
+    .phone-fallback .fb-event-title {
+      font-size: .72rem;
       font-weight: 600;
       color: var(--ink);
-      text-decoration: none;
-      transition: color .2s;
     }
-    .nav-mobile-menu a:hover { color: var(--coral); }
+    .phone-fallback .fb-tag {
+      font-family: var(--font-mono);
+      font-size: .52rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
 
-    /* ─── Divider ornament ───────────────────────────────────────── */
-    .divider-ornament {
+    /* Annotation around phone */
+    .annot {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+    }
+    .annot.tl { top: 60px; right: calc(50% + 180px); }
+    .annot.tl::after { content: ''; width: 50px; height: 1px; background: var(--ink-muted); }
+    .annot.br { bottom: 100px; left: calc(50% + 180px); }
+    .annot.br::before { content: ''; width: 50px; height: 1px; background: var(--ink-muted); }
+    @media (max-width: 1100px) { .annot { display: none; } }
+
+    /* ─── Strip stats ────────────────────────────────────────── */
+    .strip {
+      padding: 36px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-2);
+    }
+    .strip-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      align-items: center;
+    }
+    .strip-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .strip-num {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-variation-settings: "opsz" 48;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      letter-spacing: -0.025em;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .strip-num em {
+      font-style: normal;
+      color: var(--blue-deep);
+    }
+    .strip-label {
+      font-family: var(--font-mono);
+      font-size: .68rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    /* ─── Why ────────────────────────────────────────────────── */
+    .why {
+      padding: 120px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .why-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: 80px;
+      align-items: start;
+    }
+    .why-h {
+      font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+      max-width: 13ch;
+    }
+    .why-h .accent { color: var(--blue-deep); }
+
+    .why-body p {
+      font-size: 1.1rem;
+      line-height: 1.65;
+      color: var(--ink-soft);
+    }
+    .why-body p + p { margin-top: 1.4em; }
+
+    .why-list {
+      margin-top: 56px;
+      list-style: none;
+    }
+    .why-list li {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 24px;
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+    }
+    .why-list li:last-child { border-bottom: 1px solid var(--line); }
+    .why-list .num {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-weight: 500;
+      padding-top: 6px;
+    }
+    .why-list .text {
+      font-size: 1rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+    .why-list .text strong {
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-variation-settings: "opsz" 18;
+      font-size: 1.08rem;
+      letter-spacing: -0.012em;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* ─── Features ───────────────────────────────────────────── */
+    .features {
+      padding: 120px 0;
+      background: var(--bg-2);
+      border-bottom: 1px solid var(--line);
+    }
+    .features-head {
+      max-width: 880px;
+      margin-bottom: 90px;
+    }
+    .features-head .eyebrow { margin-bottom: 24px; }
+    .features-h {
+      font-size: clamp(2.4rem, 5.2vw, 4.2rem);
+      margin-bottom: 28px;
+    }
+    .features-h .accent { color: var(--green-deep); }
+
+    .features-sub {
+      font-size: 1.18rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 600px;
+    }
+
+    /* Showcase: 3 alternating big rows with screenshot */
+    .showcase { display: flex; flex-direction: column; gap: 0; }
+
+    .show-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 80px;
+      align-items: center;
+      padding: 80px 0;
+      border-top: 1px solid var(--line);
+    }
+    .show-row:last-child { border-bottom: 1px solid var(--line); }
+    .show-row.reverse { direction: rtl; }
+    .show-row.reverse > * { direction: ltr; }
+
+    .show-art {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .show-frame {
+      position: relative;
+      width: 280px;
+      height: 580px;
+      background: linear-gradient(160deg, #0c0c0c, #2a2a2a);
+      border-radius: 44px;
+      padding: 10px;
+      box-shadow: 0 30px 60px -30px rgba(14,14,12,.25);
+    }
+    .show-frame .phone-screen { border-radius: 35px; }
+
+    .show-text { padding: 20px 0; }
+    .show-num {
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-weight: 500;
+      margin-bottom: 18px;
+    }
+    .show-title {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-variation-settings: "opsz" 60;
+      font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      color: var(--ink);
+      margin-bottom: 18px;
+    }
+    .show-body {
+      font-size: 1.04rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin-bottom: 22px;
+    }
+    .show-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .show-tag {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+    .tag-blue   { background: var(--blue-soft); color: var(--blue-deep); }
+    .tag-green  { background: var(--green-soft); color: var(--green-deep); }
+    .tag-warm   { background: #FFF1E0; color: #B05A0F; }
+    .tag-line   { background: transparent; color: var(--ink-muted); border: 1px solid var(--line); }
+
+    /* Compact features grid (the rest) */
+    .compact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--line);
+      margin-top: 40px;
+    }
+    .compact-feat {
+      padding: 36px 36px 36px 0;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .compact-feat:nth-child(3n) { border-right: none; padding-right: 0; }
+    .compact-feat:nth-child(3n+1) { padding-left: 0; }
+    .compact-feat:not(:nth-child(3n+1)) { padding-left: 36px; }
+
+    .compact-num {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      margin-bottom: 14px;
+    }
+    .compact-feat h4 {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-variation-settings: "opsz" 24;
+      font-size: 1.25rem;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .compact-feat p {
+      font-size: .94rem;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
+    /* ─── Personas ──────────────────────────────────────────── */
+    .personas {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .personas::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 40% at 0% 0%, rgba(74,144,226,.18), transparent 60%),
+        radial-gradient(ellipse 40% 40% at 100% 100%, rgba(126,211,33,.10), transparent 60%);
+      pointer-events: none;
+    }
+    .personas > * { position: relative; }
+
+    .personas .eyebrow { color: rgba(255,255,255,.55); }
+    .personas .eyebrow::before { background: rgba(255,255,255,.45); }
+
+    .personas-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 80px;
+      align-items: end;
+      margin-bottom: 80px;
+    }
+    .personas-h {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: var(--bg);
+    }
+    .personas-h .accent { color: var(--green); }
+
+    .personas-sub {
+      font-size: 1.1rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,.7);
+    }
+
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .persona {
+      padding: 40px 32px 36px;
+      background: var(--ink);
+      transition: background .25s ease;
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+    .persona:hover { background: rgba(255,255,255,.025); }
+
+    .persona-mark {
+      width: 40px; height: 40px;
+      border-radius: 11px;
+      background: rgba(255,255,255,.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .persona h3 {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-variation-settings: "opsz" 36;
+      font-size: 1.4rem;
+      letter-spacing: -0.018em;
+      color: var(--bg);
+      margin-bottom: 14px;
+    }
+    .persona p {
+      font-size: .95rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,.62);
+      margin-bottom: 24px;
+      flex: 1;
+    }
+    .persona .who {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(126,211,33,.85);
+      font-weight: 500;
+    }
+
+    /* ─── Pricing ───────────────────────────────────────────── */
+    .pricing { padding: 120px 0; border-bottom: 1px solid var(--line); }
+
+    .pricing-head { max-width: 760px; margin-bottom: 70px; }
+    .pricing-head .eyebrow { margin-bottom: 24px; }
+    .pricing-h {
+      font-size: clamp(2.4rem, 4.6vw, 3.6rem);
+      margin-bottom: 24px;
+    }
+    .pricing-h .accent { color: var(--blue-deep); }
+    .pricing-sub {
+      font-size: 1.1rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+    }
+
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .plan {
+      padding: 44px 36px 44px;
+      background: var(--bg);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      transition: background .25s ease;
+    }
+    .plan:last-child { border-right: none; }
+    .plan:hover { background: var(--bg-2); }
+
+    .plan.is-feat {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .plan.is-feat:hover { background: var(--ink); }
+    .plan.is-feat .plan-meta { color: rgba(255,255,255,.65); }
+    .plan.is-feat .plan-name { color: var(--bg); }
+    .plan.is-feat .plan-price { border-color: rgba(255,255,255,.12); }
+    .plan.is-feat .plan-price .unit { color: rgba(255,255,255,.55); }
+    .plan.is-feat .plan-features li { color: rgba(255,255,255,.78); border-color: rgba(255,255,255,.1); }
+    .plan.is-feat .plan-features li::before { color: var(--green); }
+    .plan.is-feat .plan-cta { background: var(--bg); color: var(--ink); }
+    .plan.is-feat .plan-cta:hover { background: white; transform: translateY(-1px); }
+    .plan.is-feat .plan-badge { background: var(--green); color: var(--ink); }
+
+    .plan-badge {
+      align-self: flex-start;
+      font-family: var(--font-mono);
+      font-size: .62rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue-deep);
+      margin-bottom: 16px;
+    }
+    .plan-badge.is-empty {
+      background: transparent;
+      color: var(--ink-muted);
+      padding-left: 0;
+    }
+
+    .plan-name {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-variation-settings: "opsz" 36;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .plan-meta {
+      font-size: .94rem;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+      min-height: 44px;
+    }
+
+    .plan-price {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 28px;
+      padding-bottom: 26px;
+      border-bottom: 1px solid var(--line);
+    }
+    .plan-price .num {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-variation-settings: "opsz" 96;
+      font-size: 3rem;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .plan-price .unit {
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .plan-features {
+      list-style: none;
+      flex: 1;
+      margin-bottom: 28px;
+    }
+    .plan-features li {
+      position: relative;
+      padding: 12px 0 12px 24px;
+      font-size: .94rem;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--line-soft);
+      line-height: 1.45;
+    }
+    .plan-features li:first-child { border-top: none; }
+    .plan-features li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      color: var(--blue-deep);
+      font-weight: 500;
+      font-size: 1.05rem;
+    }
+
+    .plan-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 24px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--bg);
+      font-size: .92rem;
+      font-weight: 500;
+      transition: transform .15s ease, background .2s ease;
+    }
+    .plan-cta:hover {
+      transform: translateY(-1px);
+      background: var(--blue-deep);
+    }
+
+    .pricing-foot {
+      margin-top: 32px;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      color: var(--ink-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── Closing ────────────────────────────────────────────── */
+    .close {
+      padding: 130px 0;
       text-align: center;
-      padding: 20px 0;
+      background: var(--bg-2);
     }
-    .divider-ornament svg { opacity: .25; }
+    .close .eyebrow {
+      margin: 0 auto 32px;
+      justify-content: center;
+    }
+    .close-h {
+      font-size: clamp(3rem, 6.4vw, 5.4rem);
+      max-width: 18ch;
+      margin: 0 auto 32px;
+    }
+    .close-h .accent { color: var(--green-deep); }
+    .close-sub {
+      font-size: 1.18rem;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      max-width: 540px;
+      margin: 0 auto 48px;
+    }
+    .close .stores { justify-content: center; }
 
-    /* ─── Responsive ─────────────────────────────────────────────── */
-    @media (max-width: 900px) {
-      :root { --section-py: 72px; }
+    /* ─── Footer ────────────────────────────────────────────── */
+    .footer {
+      padding: 64px 0 36px;
+      background: var(--ink);
+      color: rgba(255,255,255,.6);
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+      gap: 48px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .footer-brand { display: flex; flex-direction: column; gap: 16px; }
+    .footer-mark { width: 52px; }
+    .footer-name {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-variation-settings: "opsz" 36;
+      font-size: 1.4rem;
+      letter-spacing: -0.025em;
+      color: var(--bg);
+    }
+    .footer-tag { font-size: .92rem; max-width: 280px; line-height: 1.5; }
+    .footer-col h4 {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a {
+      font-size: .9rem;
+      color: rgba(255,255,255,.7);
+      transition: color .2s ease;
+    }
+    .footer-col a:hover { color: var(--bg); }
 
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 28px;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-family: var(--font-mono);
+      font-size: .72rem;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,.45);
+    }
+
+    /* ─── Reveal ─────────────────────────────────────────────── */
+    .rv {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+    }
+    .rv.in { opacity: 1; transform: translateY(0); }
+    .rv-d1 { transition-delay: .08s; }
+    .rv-d2 { transition-delay: .16s; }
+    .rv-d3 { transition-delay: .24s; }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      :root { --gutter: 28px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+      .hero-art { order: -1; min-height: 600px; }
+      .why-inner { grid-template-columns: 1fr; gap: 40px; }
+      .show-row,
+      .show-row.reverse { grid-template-columns: 1fr; gap: 40px; direction: ltr; }
+      .show-art { order: -1; }
+      .compact-grid { grid-template-columns: repeat(2, 1fr); }
+      .compact-feat:nth-child(3n) { border-right: 1px solid var(--line); padding-right: 36px; }
+      .compact-feat:nth-child(2n) { border-right: none; padding-right: 0; }
+      .compact-feat:nth-child(2n+1) { padding-left: 0; }
+      .compact-feat:nth-child(2n) { padding-left: 36px; }
+      .strip-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .personas-head { grid-template-columns: 1fr; gap: 24px; align-items: start; }
+      .personas-grid { grid-template-columns: repeat(2, 1fr); }
+      .price-grid { grid-template-columns: 1fr; }
+      .plan { border-right: none; border-bottom: 1px solid var(--line); }
+      .plan:last-child { border-bottom: none; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; margin-bottom: 8px; }
       .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-
-      .hero-inner {
-        grid-template-columns: 1fr;
-        gap: 48px;
-        text-align: center;
-      }
-      .hero-sub { margin-left: auto; margin-right: auto; }
-      .hero-actions { justify-content: center; }
-      .hero-visual { height: 360px; }
-      .hero-card-main { width: 240px; }
-      .hero-card-b { width: 170px; left: -10px; }
-      .hero-card-c { width: 160px; right: -10px; }
-
-      .pain-grid { grid-template-columns: 1fr; gap: 1px; }
-      .pain-card:first-child  { border-radius: var(--radius-md) var(--radius-md) 0 0; }
-      .pain-card:nth-child(2) { border-radius: 0; }
-      .pain-card:nth-child(3) { border-radius: 0; }
-      .pain-card:last-child   { border-radius: 0 0 var(--radius-md) var(--radius-md); }
-
-      .features-grid { grid-template-columns: repeat(2, 1fr); }
-      .forwhom-grid  { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
-      .stats-inner   { grid-template-columns: 1fr; gap: 40px; }
-      .cta-box { padding: 48px 28px; border-radius: var(--radius-lg); }
+      .nav-burger { display: flex; }
+      .btn-line { display: none; }
     }
 
-    @media (max-width: 600px) {
-      :root { --section-py: 56px; }
-      .features-grid { grid-template-columns: 1fr; }
-      .stats-grid    { grid-template-columns: 1fr; }
-      .hero-visual   { height: 300px; }
-      .hero-card-main { width: 210px; }
-      .hero-card-b, .hero-card-c { display: none; }
-      .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+    @media (max-width: 640px) {
+      :root { --gutter: 20px; }
+      .hero { padding: 48px 0 64px; }
+      .hero-h1 { font-size: clamp(2.6rem, 12vw, 4rem); }
+      .hero-art { transform: scale(.88); min-height: 520px; }
+      .phone-2 { display: none; }
+      .why { padding: 80px 0; }
+      .features { padding: 80px 0; }
+      .show-row { padding: 56px 0; }
+      .show-frame { width: 240px; height: 500px; }
+      .compact-grid { grid-template-columns: 1fr; }
+      .compact-feat { border-right: none !important; padding-right: 0 !important; padding-left: 0 !important; }
+      .personas { padding: 80px 0; }
+      .personas-grid { grid-template-columns: 1fr; }
+      .pricing { padding: 80px 0; }
+      .close { padding: 80px 0; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .status-bar { font-size: .65rem; padding: 7px 14px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ─── Navbar ─────────────────────────────────────────────────── -->
-  <nav class="nav" id="nav" role="navigation" aria-label="Navigation principale">
-    <a href="#" class="nav-logo"><img src="logo.svg" alt="ParentaLink" height="40"></a>
-    <ul class="nav-links" role="list">
-      <li><a href="#fonctionnalites">Fonctionnalités</a></li>
-      <li><a href="#pour-qui">Pour qui ?</a></li>
-      <li><a href="#chiffres">Chiffres</a></li>
-      <li><a href="#contact" class="nav-cta">Nous contacter</a></li>
-    </ul>
-    <button class="nav-hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <!-- Mobile menu -->
-  <div class="nav-mobile-menu" id="mobileMenu" role="dialog" aria-label="Menu mobile">
-    <a href="#fonctionnalites" onclick="closeMobileMenu()">Fonctionnalités</a>
-    <a href="#pour-qui" onclick="closeMobileMenu()">Pour qui ?</a>
-    <a href="#chiffres" onclick="closeMobileMenu()">Chiffres</a>
-    <a href="#contact" onclick="closeMobileMenu()" style="color:var(--coral)">Nous contacter</a>
+  <!-- ─── Status bar ────────────────────────────────────────── -->
+  <div class="status-bar" role="status">
+    <span class="status-dot"></span>
+    Disponible aujourd'hui sur Google Play · Bientôt sur l'App Store
+    <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener">Télécharger →</a>
   </div>
 
-  <!-- ─── Hero ───────────────────────────────────────────────────── -->
-  <main>
-  <section class="hero" aria-label="Introduction">
-    <div class="hero-inner container">
-      <!-- Left column -->
-      <div class="hero-text">
-        <img src="logo-baseline.svg" alt="ParentaLink" class="hero-logo" id="heroLogo">
-        <div class="hero-label">
-          Bêta en cours
-        </div>
-        <h1 class="display hero-title">
-          Votre famille,<br>
-          <em>mieux organisée.</em>
-        </h1>
-        <p class="hero-sub">
-          ParentaLink aide toutes les familles à s'organiser : calendrier partagé, dépenses, documents et règles éducatives — synchronisés en temps réel pour chaque membre.
-        </p>
-        <div class="hero-actions">
-          <a href="#contact" class="btn-primary">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            Nous contacter
-          </a>
-          <a href="#fonctionnalites" class="btn-secondary">
-            Voir les fonctionnalités
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- Right column — floating UI cards -->
-      <div class="hero-visual" aria-hidden="true">
-
-        <!-- Main card: calendar -->
-        <div class="hero-card hero-card-main">
-          <div class="card-header-row">
-            <div class="card-icon-wrap coral">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            </div>
-            <span class="card-badge badge-green">Semaine en cours</span>
-          </div>
-          <div class="card-title">Planning de garde — Mars 2026</div>
-          <div class="card-sub">Cette semaine · 3 événements</div>
-          <div class="mini-calendar">
-            <div class="cal-day">L</div><div class="cal-day">M</div><div class="cal-day">M</div>
-            <div class="cal-day">J</div><div class="cal-day">V</div><div class="cal-day">S</div><div class="cal-day">D</div>
-            <div class="cal-day b">17</div><div class="cal-day b">18</div><div class="cal-day today">19</div>
-            <div class="cal-day a">20</div><div class="cal-day a">21</div><div class="cal-day a">22</div><div class="cal-day a">23</div>
-            <div class="cal-day b">24</div><div class="cal-day b">25</div><div class="cal-day b">26</div>
-            <div class="cal-day a">27</div><div class="cal-day a">28</div><div class="cal-day a">29</div><div class="cal-day a">30</div>
-          </div>
-        </div>
-
-        <!-- Card B: expenses -->
-        <div class="hero-card hero-card-b">
-          <div class="card-header-row">
-            <div class="card-icon-wrap amber">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7ED321" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            </div>
-            <span class="card-badge badge-amber">Ce mois</span>
-          </div>
-          <div class="card-title">Dépenses</div>
-          <div class="expense-row">
-            <span class="exp-label">École</span>
-            <span class="exp-amount">84 €</span>
-          </div>
-          <div class="expense-row">
-            <span class="exp-label">Sport</span>
-            <span class="exp-amount">45 €</span>
-          </div>
-          <div style="margin-top:10px">
-            <div class="progress-label">Équilibre · 62 %</div>
-            <div class="progress-track"><div class="progress-fill" style="width:62%"></div></div>
-          </div>
-        </div>
-
-        <!-- Card C: notification -->
-        <div class="hero-card hero-card-c">
-          <div class="card-title" style="margin-bottom:12px">Notifications</div>
-          <div class="notif-item">
-            <div class="notif-dot" style="background:#34A853"></div>
-            <div>
-              <div class="notif-text">Léa a mis à jour les règles de coucher</div>
-              <div class="notif-time">Il y a 5 min</div>
-            </div>
-          </div>
-          <div class="notif-item">
-            <div class="notif-dot" style="background:var(--coral)"></div>
-            <div>
-              <div class="notif-text">Rappel : Médecin demain 14h</div>
-              <div class="notif-time">Il y a 1h</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Pain Points ───────────────────────────────────────────── -->
-  <section class="pain-section" aria-label="Problèmes résolus">
-    <div class="container">
-      <div class="pain-header reveal">
-        <div class="label">Le problème</div>
-        <h2 class="display">La vie de famille, c'est chaotique.<br>Ce n'est pas une fatalité.</h2>
-      </div>
-      <div class="pain-grid">
-        <div class="pain-card reveal delay-1">
-          <div class="pain-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </div>
-          <h3>Des règles éducatives sans cohérence</h3>
-          <p>L'heure du coucher, le temps d'écran, les devoirs — sans coordination entre les parents, les enfants jouent sur les différences et l'autorité s'effrite.</p>
-        </div>
-        <div class="pain-card reveal delay-2">
-          <div class="pain-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-          </div>
-          <h3>Documents éparpillés aux mauvais moments</h3>
-          <p>Carnet de santé introuvable aux urgences, CNI oubliée pour la sortie scolaire — les documents critiques de vos enfants méritent mieux qu'un fil de messagerie.</p>
-        </div>
-        <div class="pain-card reveal delay-3">
-          <div class="pain-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-          </div>
-          <h3>Aucune visibilité sur le quotidien des enfants</h3>
-          <p>Votre enfant a un rendez-vous chez le médecin, un devoir à rendre, un anniversaire de copain — et vous l'apprenez au dernier moment par un SMS.</p>
-        </div>
-        <div class="pain-card reveal delay-4">
-          <div class="pain-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
-          <h3>Les dépenses, source de tensions permanentes</h3>
-          <p>Qui a payé les fournitures scolaires ? Qui doit rembourser les activités du mois ? Sans suivi partagé entre les membres de la famille, chaque dépense devient un terrain de tension.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Features ─────────────────────────────────────────────── -->
-  <section class="features-section" id="fonctionnalites" aria-label="Fonctionnalités">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="label">Fonctionnalités</div>
-        <h2 class="display">Tout ce dont votre famille a besoin</h2>
-        <p>Du calendrier aux dépenses, en passant par les règles éducatives — ParentaLink couvre l'intégralité du quotidien familial.</p>
-      </div>
-
-      <div class="features-grid">
-
-        <div class="feature-card reveal delay-1">
-          <div class="feature-icon fi-coral">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <h3>Planning de garde</h3>
-          <p>Visualisez l'organisation de la famille à tout moment. Garde alternée, résidence principale ou planning sur mesure — le calendrier s'adapte à votre situation.</p>
-          <span class="feature-tag">Garde alternée</span>
-        </div>
-
-        <div class="feature-card reveal delay-2">
-          <div class="feature-icon fi-blue">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4285F4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-          </div>
-          <h3>Calendrier partagé</h3>
-          <p>Événements familiaux synchronisés avec récurrence hebdomadaire ou bimensuelle, rappels intelligents et notifications push pour chaque membre de la famille.</p>
-          <span class="feature-tag">Notifications push</span>
-        </div>
-
-        <div class="feature-card reveal delay-3">
-          <div class="feature-icon fi-amber">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7ED321" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
-          <h3>Dépenses partagées</h3>
-          <p>Suivez les dépenses par catégorie, visualisez l'équilibre entre parents, consultez les stats mensuelles et exportez en PDF.</p>
-          <span class="feature-tag">Export PDF</span>
-        </div>
-
-        <div class="feature-card reveal delay-4">
-          <div class="feature-icon fi-green">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34A853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-          </div>
-          <h3>Documents partagés</h3>
-          <p>CNI, carnet de santé, attestations — tous les documents importants de vos enfants stockés et accessibles par tous les membres de la famille, en tout temps.</p>
-          <span class="feature-tag">Stockage sécurisé</span>
-        </div>
-
-        <div class="feature-card reveal delay-5">
-          <div class="feature-icon fi-purple">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9C6ADE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Règles éducatives</h3>
-          <p>Définissez des règles globales ou par enfant, avec déclencheur configurable et réinitialisation automatique. Une cohérence éducative au sein de toute la famille.</p>
-          <span class="feature-tag">Par enfant</span>
-        </div>
-
-        <div class="feature-card reveal delay-6">
-          <div class="feature-icon fi-rose">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EC4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <h3>Familles recomposées</h3>
-          <p>Attribuez des rôles précis pour chaque enfant — parent, beau-parent, et plus. ParentaLink s'adapte à la réalité de votre famille, quelle que soit sa structure.</p>
-          <span class="feature-tag">Rôles flexibles</span>
-        </div>
-
-        <div class="feature-card reveal delay-7">
-          <div class="feature-icon fi-teal">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00ACC1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          </div>
-          <h3>Notifications push</h3>
-          <p>Chaque mise à jour — garde, événement, dépense, règle — déclenche une notification en temps réel pour chaque membre concerné. Zéro information perdue.</p>
-          <span class="feature-tag">Temps réel</span>
-        </div>
-
-        <div class="feature-card reveal delay-8">
-          <div class="feature-icon fi-slate">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          </div>
-          <h3>Mode sombre</h3>
-          <p>Interface soignée en mode clair et en mode sombre, pour un confort visuel à toute heure. L'application s'adapte à vos préférences système.</p>
-          <span class="feature-tag">iOS &amp; Android</span>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── For Who ───────────────────────────────────────────────── -->
-  <section class="forwhom-section" id="pour-qui" aria-label="Pour qui">
-    <div class="container">
-      <div class="section-header reveal">
-        <div class="label">Pour qui</div>
-        <h2 class="display">Conçu pour votre réalité</h2>
-        <p>Quelle que soit la configuration de votre famille, ParentaLink s'adapte à votre quotidien.</p>
-      </div>
-      <div class="forwhom-grid">
-
-        <div class="persona-card reveal delay-1">
-          <div class="persona-avatar">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <h3>Couples et familles</h3>
-          <p>Vous vivez ensemble et souhaitez mieux vous organiser au quotidien. ParentaLink centralise le calendrier, les dépenses et les documents pour toute la famille.</p>
-        </div>
-
-        <div class="persona-card reveal delay-2">
-          <div class="persona-avatar">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#7ED321" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <h3>Parents séparés</h3>
-          <p>Vous partagez la garde de vos enfants et souhaitez une coordination fluide, sans que chaque échange ne vire au désaccord. ParentaLink centralise tout.</p>
-        </div>
-
-        <div class="persona-card reveal delay-3">
-          <div class="persona-avatar">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#34A853" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <h3>Familles recomposées</h3>
-          <p>Beaux-parents, demi-frères et sœurs — gérez les rôles et les droits de chaque adulte impliqué dans la vie de vos enfants avec précision et bienveillance.</p>
-        </div>
-
-        <div class="persona-card reveal delay-4">
-          <div class="persona-avatar">
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1976D2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          </div>
-          <h3>Grands-parents et proches</h3>
-          <p>Grands-parents, nounous, assistantes maternelles — impliquez chaque personne qui compte dans la vie de l'enfant, avec les droits adaptés à leur rôle.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Stats ─────────────────────────────────────────────────── -->
-  <section class="stats-section" id="chiffres" aria-label="Chiffres clés">
-    <div class="container">
-      <div class="stats-inner">
-        <div class="stats-text reveal">
-          <div class="label">Pourquoi c'est important</div>
-          <h2 class="display">Un enjeu qui touche toutes les familles</h2>
-          <p>Coordonner la vie de famille — rendez-vous, dépenses, documents, règles — est un défi quotidien pour des millions de parents en France.</p>
-          <p>ParentaLink est conçu pour simplifier ce quotidien, quelle que soit la configuration de votre famille.</p>
-        </div>
-        <div class="stats-grid">
-          <div class="stat-card reveal delay-1">
-            <div class="stat-number">16M</div>
-            <div class="stat-label">de familles avec enfants en France ont besoin de mieux s'organiser au quotidien</div>
-          </div>
-          <div class="stat-card reveal delay-2">
-            <div class="stat-number">73%</div>
-            <div class="stat-label">des parents estiment manquer d'un outil centralisé pour coordonner la vie familiale</div>
-          </div>
-          <div class="stat-card reveal delay-3">
-            <div class="stat-number">2×</div>
-            <div class="stat-label">moins de tensions dans les familles qui utilisent un outil de suivi partagé des dépenses</div>
-          </div>
-          <div class="stat-card reveal delay-4">
-            <div class="stat-number">1</div>
-            <div class="stat-label">application pour tout centraliser et redonner de la sérénité à toute la famille</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Contact ─────────────────────────────────────────────────── -->
-  <section class="cta-section" id="contact" aria-label="Contact">
-    <div class="container">
-      <div class="cta-box reveal">
-        <div class="label">Bêta & Contact</div>
-        <h2 class="display">Rejoignez la bêta ou contactez-nous.</h2>
-        <p>ParentaLink est en bêta active. Inscrivez-vous pour tester l'application en avant-premiere, ou posez-nous vos questions — chaque retour compte.</p>
-        <form id="contactForm" style="max-width:440px;margin:0 auto;text-align:left">
-          <input type="text" id="contactName" placeholder="Votre nom" required style="
-            width:100%;padding:14px 18px;margin-bottom:12px;border-radius:50px;border:1.5px solid rgba(255,255,255,.15);
-            background:rgba(255,255,255,.08);color:#fff;font-family:var(--font-body);font-size:.95rem;outline:none;
-            transition:border-color .2s;" onfocus="this.style.borderColor='var(--coral)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'" />
-          <input type="email" id="contactEmail" placeholder="Votre e-mail" required style="
-            width:100%;padding:14px 18px;margin-bottom:12px;border-radius:50px;border:1.5px solid rgba(255,255,255,.15);
-            background:rgba(255,255,255,.08);color:#fff;font-family:var(--font-body);font-size:.95rem;outline:none;
-            transition:border-color .2s;" onfocus="this.style.borderColor='var(--coral)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'" />
-          <div style="display:flex;gap:0;margin-bottom:14px;border-radius:50px;overflow:hidden;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05)">
-            <input type="radio" name="platform" value="Android" id="platAndroid" checked style="display:none" />
-            <label for="platAndroid" id="labelAndroid" style="flex:1;padding:12px 0;text-align:center;cursor:pointer;font-size:.9rem;font-weight:600;color:rgba(255,255,255,.5);transition:all .2s;border-right:1px solid rgba(255,255,255,.1)">Android</label>
-            <input type="radio" name="platform" value="iOS" id="platIOS" style="display:none" />
-            <label for="platIOS" id="labelIOS" style="flex:1;padding:12px 0;text-align:center;cursor:pointer;font-size:.9rem;font-weight:600;color:rgba(255,255,255,.5);transition:all .2s">iOS</label>
-          </div>
-          <textarea id="contactMessage" placeholder="Votre message (optionnel)" rows="3" style="
-            width:100%;padding:14px 18px;margin-bottom:16px;border-radius:18px;border:1.5px solid rgba(255,255,255,.15);
-            background:rgba(255,255,255,.08);color:#fff;font-family:var(--font-body);font-size:.95rem;outline:none;
-            resize:vertical;transition:border-color .2s;" onfocus="this.style.borderColor='var(--coral)'" onblur="this.style.borderColor='rgba(255,255,255,.15)'"></textarea>
-          <button type="submit" class="btn-white" style="width:100%;justify-content:center;border:none;cursor:pointer">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Envoyer
-          </button>
-        </form>
-        <p class="cta-note" style="margin-top:16px">Ou écrivez-nous directement à <strong><a href="mailto:contact@parentalink.fr" style="color:rgba(74,144,226,.9);text-decoration:none">contact@parentalink.fr</a></strong></p>
-      </div>
-    </div>
-  </section>
-  </main>
-
-  <!-- ─── Footer ────────────────────────────────────────────────── -->
-  <footer class="footer" role="contentinfo">
-    <div class="footer-inner">
-      <div class="footer-logo"><img src="logo.svg" alt="ParentaLink" height="105"></div>
-      <ul class="footer-links" role="list">
-        <li><a href="#fonctionnalites">Fonctionnalités</a></li>
-        <li><a href="#pour-qui">Pour qui</a></li>
-        <li><a href="#contact">Contact</a></li>
+  <!-- ─── Nav ───────────────────────────────────────────────── -->
+  <nav class="nav" id="nav" aria-label="Navigation principale">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand" aria-label="ParentaLink">
+        <svg class="nav-mark" viewBox="0 0 680 280" aria-hidden="true">
+          <path fill="none" stroke="#4A90E2" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"
+                d="M 90 140 L 90 200 L 145 200 L 145 140 M 77 140 L 117.5 102 L 158 140"/>
+          <path fill="none" stroke="#7ED321" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"
+                d="M 535 140 L 535 200 L 590 200 L 590 140 M 522 140 L 562.5 102 L 603 140"/>
+          <path fill="none" stroke="#4A90E2" stroke-width="18" stroke-linecap="round"
+                d="M 158 170 Q 340 195 522 170"/>
+        </svg>
+        <span class="nav-name">ParentaLink</span>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="#why">Pourquoi</a></li>
+        <li><a href="#features">L'app</a></li>
+        <li><a href="#personas">Pour qui</a></li>
+        <li><a href="#pricing">Tarifs</a></li>
       </ul>
-      <div class="footer-copy">
-        <a href="mailto:contact@parentalink.fr" style="color:inherit;text-decoration:none">contact@parentalink.fr</a>
-        &nbsp;·&nbsp; &copy; 2026 ParentaLink
+      <div class="nav-cta-group">
+        <a href="#features" class="btn btn-line">Découvrir</a>
+        <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener" class="btn btn-ink">
+          <svg width="14" height="14" viewBox="0 0 22 24" aria-hidden="true">
+            <path fill="#7ED321" d="M.6.6C.2 1 0 1.6 0 2.4v19.3c0 .8.2 1.4.6 1.7l11.1-11.7L.6.6z"/>
+            <path fill="#4A90E2" d="M15.5 16l-3.8-4 3.8-4 5.4 3.1c1.4.8 1.4 2.1 0 2.8L15.5 16z"/>
+            <path fill="#F5A623" d="M11.7 12L.6 23.4c.5.5 1.3.5 2.2 0l13.1-7.4-4.2-4z"/>
+            <path fill="#EC4899" d="M11.7 12L15.9 8 2.8.6C1.9.1 1.1.1.6.6L11.7 12z"/>
+          </svg>
+          Google Play
+        </a>
+        <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ──────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-text">
+        <span class="eyebrow">L'app famille — v1.0 · Mai 2026</span>
+
+        <h1 class="display hero-h1">
+          La famille,<br>
+          sans la <span class="accent">charge<br>mentale</span>.
+        </h1>
+
+        <p class="hero-lede">
+          Calendrier, garde, dépenses, documents, règles communes. Tout ce qui vous trotte dans la tête, posé au même endroit. Pour le foyer classique comme pour les configurations à plusieurs maisons.
+        </p>
+
+        <div class="stores">
+          <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener" class="store">
+            <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true">
+              <path fill="#7ED321" d="M.6.6C.2 1 0 1.6 0 2.4v19.3c0 .8.2 1.4.6 1.7l11.1-11.7L.6.6z"/>
+              <path fill="#4A90E2" d="M15.5 16l-3.8-4 3.8-4 5.4 3.1c1.4.8 1.4 2.1 0 2.8L15.5 16z"/>
+              <path fill="#F5A623" d="M11.7 12L.6 23.4c.5.5 1.3.5 2.2 0l13.1-7.4-4.2-4z"/>
+              <path fill="#EC4899" d="M11.7 12L15.9 8 2.8.6C1.9.1 1.1.1.6.6L11.7 12z"/>
+            </svg>
+            <span class="store-meta">
+              <span class="small">Disponible sur</span>
+              <span class="big">Google Play</span>
+            </span>
+          </a>
+          <span class="store is-soon" aria-disabled="true">
+            <svg width="22" height="24" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">
+              <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+            </svg>
+            <span class="store-meta">
+              <span class="small">Bientôt sur</span>
+              <span class="big">App Store</span>
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Hero phone (uses real screenshot if /screens/calendar.png exists) -->
+      <div class="hero-art">
+        <span class="annot tl">Calendrier · multi-foyer</span>
+        <span class="annot br">Synchro temps réel</span>
+
+        <!-- Background phone (decorative) -->
+        <div class="phone phone-2 phone-fallback" aria-hidden="true">
+          <div class="phone-screen">
+            <img src="screens/expenses.png" alt="" onerror="this.parentElement.classList.add('show-fallback');this.style.display='none'">
+            <div class="phone-fallback-content" style="display:none">
+              <div class="phone-notch"></div>
+              <div class="fb-app" style="background:var(--ink);color:var(--bg);padding-top:46px;height:100%">
+                <h4 style="color:var(--bg)">Dépenses</h4>
+                <span class="fb-meta" style="color:rgba(255,255,255,.5)">Solde · 142,50 €</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Foreground phone -->
+        <div class="phone phone-fallback" aria-hidden="true">
+          <div class="phone-screen">
+            <img src="screens/calendar.png" alt="ParentaLink — vue calendrier"
+                 onerror="this.parentElement.classList.add('show-fallback');this.style.display='none'">
+            <div class="phone-fallback-content" style="display:none">
+              <div class="phone-notch"></div>
+              <div class="fb-status">
+                <span>9:41</span>
+                <span style="font-size:.6rem">●●● 100%</span>
+              </div>
+              <div class="fb-app" style="padding-top:36px">
+                <div>
+                  <h4>Mai 2026</h4>
+                  <span class="fb-meta">Cette semaine · 4 événements</span>
+                </div>
+                <div class="fb-week">
+                  <div class="fb-cell"><span class="d">L</span><span class="n">5</span><span class="marker" style="background:#4A90E2"></span></div>
+                  <div class="fb-cell is-today"><span class="d">M</span><span class="n">6</span></div>
+                  <div class="fb-cell"><span class="d">M</span><span class="n">7</span><span class="marker" style="background:#7ED321"></span></div>
+                  <div class="fb-cell"><span class="d">J</span><span class="n">8</span></div>
+                  <div class="fb-cell"><span class="d">V</span><span class="n">9</span><span class="marker" style="background:#F5A623"></span></div>
+                  <div class="fb-cell"><span class="d">S</span><span class="n">10</span><span class="marker" style="background:#7C4DFF"></span></div>
+                  <div class="fb-cell"><span class="d">D</span><span class="n">11</span></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div class="fb-event">
+                    <span class="fb-event-bar" style="background:#4A90E2"></span>
+                    <div class="fb-event-meta">
+                      <div class="fb-event-time">10:30 — 11:15</div>
+                      <div class="fb-event-title">Pédiatre · Léa</div>
+                    </div>
+                    <span class="fb-tag" style="background:#EAF3FC;color:#1E6FCB">Santé</span>
+                  </div>
+                  <div class="fb-event">
+                    <span class="fb-event-bar" style="background:#7ED321"></span>
+                    <div class="fb-event-meta">
+                      <div class="fb-event-time">17:00 — 18:30</div>
+                      <div class="fb-event-title">Judo · Noah</div>
+                    </div>
+                    <span class="fb-tag" style="background:#F0F9E1;color:#5BA013">Activité</span>
+                  </div>
+                  <div class="fb-event">
+                    <span class="fb-event-bar" style="background:#F5A623"></span>
+                    <div class="fb-event-meta">
+                      <div class="fb-event-time">Toute la journée</div>
+                      <div class="fb-event-title">Bascule garde · Maman</div>
+                    </div>
+                    <span class="fb-tag" style="background:#FFF1E0;color:#B05A0F">Garde</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Strip ─────────────────────────────────────────────── -->
+  <div class="strip">
+    <div class="wrap strip-grid">
+      <div class="strip-item">
+        <span class="strip-num"><em>1</em> appli</span>
+        <span class="strip-label">Pour toute la famille</span>
+      </div>
+      <div class="strip-item">
+        <span class="strip-num">iOS · Android</span>
+        <span class="strip-label">Synchro temps réel</span>
+      </div>
+      <div class="strip-item">
+        <span class="strip-num">0 €</span>
+        <span class="strip-label">Pour démarrer</span>
+      </div>
+      <div class="strip-item">
+        <span class="strip-num">Sans engagement</span>
+        <span class="strip-label">Résiliable à tout moment</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Why ────────────────────────────────────────────────── -->
+  <section class="why" id="why">
+    <div class="wrap why-inner">
+      <div>
+        <span class="eyebrow rv">01 — Le constat</span>
+        <h2 class="display why-h rv rv-d1" style="margin-top:24px">Coordonner une famille, ce n'est pas un projet&nbsp;: c'est <span class="accent">un métier</span>.</h2>
+      </div>
+      <div class="why-body rv rv-d2">
+        <p>
+          Les rendez-vous médicaux, les sorties scolaires, les fournitures, les remboursements, les règles d'écran, les documents à retrouver dans l'urgence. La vie de famille est faite de mille petits fils. Quand ils sont étalés entre une appli de calendrier, un fil WhatsApp et une boîte mail, quelqu'un finit par les tenir tous en tête.
+        </p>
+        <p>
+          ParentaLink réunit ces fils dans un même outil, conçu pour toutes les familles — couples, parents solos, séparés, recomposés. La structure de votre foyer évolue&nbsp;? L'app suit, sans que vous ayez à recommencer.
+        </p>
+
+        <ul class="why-list">
+          <li>
+            <span class="num">A</span>
+            <span class="text"><strong>Un calendrier où chacun voit la même chose.</strong>Plus de SMS pour confirmer un rendez-vous déjà calé.</span>
+          </li>
+          <li>
+            <span class="num">B</span>
+            <span class="text"><strong>Des dépenses qui s'équilibrent toutes seules.</strong>Fini les calculs Excel pour les fournitures et les activités.</span>
+          </li>
+          <li>
+            <span class="num">C</span>
+            <span class="text"><strong>Des documents accessibles aux bons moments.</strong>Le carnet de santé pour les urgences, la CNI pour la sortie scolaire.</span>
+          </li>
+          <li>
+            <span class="num">D</span>
+            <span class="text"><strong>Des règles cohérentes entre adultes.</strong>L'heure du coucher, le temps d'écran, l'argent de poche — alignés.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Features showcase ────────────────────────────────── -->
+  <section class="features" id="features">
+    <div class="wrap">
+      <div class="features-head">
+        <span class="eyebrow rv">02 — Ce que vous y trouverez</span>
+        <h2 class="display features-h rv rv-d1">Six outils. <span class="accent">Une seule app.</span></h2>
+        <p class="features-sub rv rv-d2">Chaque fonction résout un problème concret. Aucune n'a été ajoutée pour faire joli sur une slide.</p>
+      </div>
+
+      <div class="showcase">
+        <article class="show-row rv">
+          <div class="show-text">
+            <div class="show-num">01 — Calendrier &amp; garde</div>
+            <h3 class="show-title">Une semaine, vue de la même façon par tout le monde.</h3>
+            <p class="show-body">
+              Visualisez la semaine de chaque enfant en un coup d'œil. Événements récurrents, exceptions de garde, rappels — chaque parent voit la même réalité, sans avoir à la reconstruire. La garde alternée se modélise précisément, y compris les week-ends spéciaux et les vacances.
+            </p>
+            <div class="show-tags">
+              <span class="show-tag tag-blue">Multi-foyer</span>
+              <span class="show-tag tag-green">Notifications push</span>
+              <span class="show-tag tag-line">Récurrence intelligente</span>
+            </div>
+          </div>
+          <div class="show-art">
+            <div class="show-frame phone-fallback">
+              <div class="phone-screen">
+                <img src="screens/calendar.png" alt="ParentaLink — vue calendrier"
+                     onerror="this.parentElement.classList.add('show-fallback');this.style.display='none'">
+                <div class="phone-fallback-content" style="display:none">
+                  <div class="phone-notch"></div>
+                  <div class="fb-app" style="padding-top:38px">
+                    <div>
+                      <h4>Calendrier</h4>
+                      <span class="fb-meta">Mai 2026</span>
+                    </div>
+                    <div class="fb-week">
+                      <div class="fb-cell"><span class="d">L</span><span class="n">5</span></div>
+                      <div class="fb-cell is-today"><span class="d">M</span><span class="n">6</span></div>
+                      <div class="fb-cell"><span class="d">M</span><span class="n">7</span></div>
+                      <div class="fb-cell"><span class="d">J</span><span class="n">8</span></div>
+                      <div class="fb-cell"><span class="d">V</span><span class="n">9</span></div>
+                      <div class="fb-cell"><span class="d">S</span><span class="n">10</span></div>
+                      <div class="fb-cell"><span class="d">D</span><span class="n">11</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="show-row reverse rv">
+          <div class="show-text">
+            <div class="show-num">02 — Dépenses partagées</div>
+            <h3 class="show-title">Fini le tableur partagé qui prend la poussière.</h3>
+            <p class="show-body">
+              Saisissez une dépense en deux secondes, ParentaLink fait le calcul. Le solde entre parents s'affiche en temps réel, par catégorie et par mois. Export PDF pour la réunion annuelle ou le dossier d'avocat, si jamais.
+            </p>
+            <div class="show-tags">
+              <span class="show-tag tag-green">Calcul auto</span>
+              <span class="show-tag tag-warm">Export PDF</span>
+              <span class="show-tag tag-line">Catégories &amp; stats</span>
+            </div>
+          </div>
+          <div class="show-art">
+            <div class="show-frame phone-fallback">
+              <div class="phone-screen">
+                <img src="screens/expenses.png" alt="ParentaLink — dépenses"
+                     onerror="this.parentElement.classList.add('show-fallback');this.style.display='none'">
+                <div class="phone-fallback-content" style="display:none;background:var(--ink);height:100%;color:var(--bg);padding:60px 18px 18px">
+                  <h4 style="color:var(--bg);font-family:var(--font-display);font-size:1.2rem">Dépenses</h4>
+                  <span style="font-family:var(--font-mono);font-size:.6rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.04em;display:block;margin-top:4px">Solde · 142,50 €</span>
+                  <div style="margin-top:24px;display:flex;flex-direction:column;gap:8px">
+                    <div style="background:rgba(255,255,255,.06);padding:12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.8rem">École</span><span style="color:#7ED321;font-weight:600;font-size:.85rem">+84 €</span></div>
+                    <div style="background:rgba(255,255,255,.06);padding:12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.8rem">Sport</span><span style="color:#7ED321;font-weight:600;font-size:.85rem">+45 €</span></div>
+                    <div style="background:rgba(255,255,255,.06);padding:12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:.8rem">Vêtements</span><span style="color:#F5A623;font-weight:600;font-size:.85rem">−13,50 €</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="show-row rv">
+          <div class="show-text">
+            <div class="show-num">03 — Documents administratifs</div>
+            <h3 class="show-title">Le carnet de santé n'a plus de raison d'être perdu.</h3>
+            <p class="show-body">
+              Carnet de santé, CNI, attestations, ordonnances — scannés ou photographiés une fois, accessibles à tous les parents partout. Téléchargeables, imprimables, partageables, classés par enfant.
+            </p>
+            <div class="show-tags">
+              <span class="show-tag tag-blue">Stockage chiffré</span>
+              <span class="show-tag tag-line">Téléchargement iOS &amp; Android</span>
+            </div>
+          </div>
+          <div class="show-art">
+            <div class="show-frame phone-fallback">
+              <div class="phone-screen">
+                <img src="screens/documents.png" alt="ParentaLink — documents"
+                     onerror="this.parentElement.classList.add('show-fallback');this.style.display='none'">
+                <div class="phone-fallback-content" style="display:none;height:100%;padding:60px 18px 18px">
+                  <h4 style="font-family:var(--font-display);font-size:1.2rem">Documents</h4>
+                  <span style="font-family:var(--font-mono);font-size:.6rem;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.04em;display:block;margin-top:4px">12 fichiers · 47 Mo</span>
+                  <div style="margin-top:24px;display:flex;flex-direction:column;gap:6px">
+                    <div style="background:white;padding:14px;border-radius:10px;border:1px solid var(--line-soft);display:flex;align-items:center;gap:10px">
+                      <div style="width:32px;height:32px;background:#EAF3FC;border-radius:8px"></div>
+                      <div><div style="font-size:.78rem;font-weight:600">Carnet santé · Léa</div><div style="font-size:.62rem;color:var(--ink-muted)">PDF · 1,2 Mo</div></div>
+                    </div>
+                    <div style="background:white;padding:14px;border-radius:10px;border:1px solid var(--line-soft);display:flex;align-items:center;gap:10px">
+                      <div style="width:32px;height:32px;background:#F0F9E1;border-radius:8px"></div>
+                      <div><div style="font-size:.78rem;font-weight:600">CNI · Noah</div><div style="font-size:.62rem;color:var(--ink-muted)">JPG · 880 Ko</div></div>
+                    </div>
+                    <div style="background:white;padding:14px;border-radius:10px;border:1px solid var(--line-soft);display:flex;align-items:center;gap:10px">
+                      <div style="width:32px;height:32px;background:#FFF1E0;border-radius:8px"></div>
+                      <div><div style="font-size:.78rem;font-weight:600">Cantine 2026</div><div style="font-size:.62rem;color:var(--ink-muted)">PDF · 240 Ko</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- 3 compact features -->
+      <div class="compact-grid">
+        <div class="compact-feat rv">
+          <div class="compact-num">04 — Règles éducatives</div>
+          <h4>Aligner les adultes sur les bases.</h4>
+          <p>Heure du coucher, écrans, sorties, argent de poche — visibles, négociables, mais d'abord visibles. Spécifiques à un enfant ou globales à toute la famille.</p>
+        </div>
+        <div class="compact-feat rv rv-d1">
+          <div class="compact-num">05 — Rôles &amp; permissions</div>
+          <h4>Chaque adulte a sa place.</h4>
+          <p>Parents biologiques, beaux-parents, grands-parents, nounous — permissions adaptées à chaque rôle. La grand-mère qui récupère mardi voit son créneau, pas vos finances.</p>
+        </div>
+        <div class="compact-feat rv rv-d2">
+          <div class="compact-num">06 — Synchro temps réel</div>
+          <h4>Une modif, tout le monde le sait.</h4>
+          <p>Les changements apparaissent instantanément chez les autres. Notifications push intelligentes&nbsp;: vous êtes alerté de ce qui vous concerne, pas spammé pour le reste.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Personas ──────────────────────────────────────────── -->
+  <section class="personas" id="personas">
+    <div class="wrap">
+      <div class="personas-head">
+        <div>
+          <span class="eyebrow rv">03 — Pour qui c'est pensé</span>
+          <h2 class="display personas-h rv rv-d1" style="margin-top:24px">L'app suit votre famille, <span class="accent">pas l'inverse</span>.</h2>
+        </div>
+        <p class="personas-sub rv rv-d2">
+          Pas de présupposé sur votre configuration. Les fonctions s'activent selon la réalité de votre foyer, sans paramétrage compliqué.
+        </p>
+      </div>
+
+      <div class="personas-grid rv">
+
+        <div class="persona">
+          <div class="persona-mark">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7ED321" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <h3>Foyer classique</h3>
+          <p>Deux parents, un toit, des enfants. La logistique reste un boulot — et la charge mentale ne se devine pas. ParentaLink la met sur la table, à deux.</p>
+          <span class="who">Couples avec enfants</span>
+        </div>
+
+        <div class="persona">
+          <div class="persona-mark">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3>Parent solo</h3>
+          <p>Vous portez l'organisation au quotidien. ParentaLink ne va pas alléger la responsabilité — mais il vous évite de tout garder en tête.</p>
+          <span class="who">Mono-parental</span>
+        </div>
+
+        <div class="persona">
+          <div class="persona-mark">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7ED321" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 9l4-3 5 4 5-4 4 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <line x1="12" y1="10" x2="12" y2="22"/>
+            </svg>
+          </div>
+          <h3>Garde alternée</h3>
+          <p>Deux foyers, une seule réalité pour les enfants. Plannings, exceptions, dépenses partagées et règles communes — sans porter la coordination tout seul.</p>
+          <span class="who">Parents séparés</span>
+        </div>
+
+        <div class="persona">
+          <div class="persona-mark">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="9" cy="7" r="3"/>
+              <circle cx="18" cy="9" r="2.4"/>
+              <path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/>
+              <path d="M22 21v-1.5a3 3 0 0 0-2.5-3"/>
+            </svg>
+          </div>
+          <h3>Recomposée &amp; élargie</h3>
+          <p>Beaux-parents, demi-frères et sœurs, grands-parents impliqués&nbsp;: chacun a son rôle, ses droits, sa place. ParentaLink modélise la complexité sans la durcir.</p>
+          <span class="who">Familles élargies</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Pricing ───────────────────────────────────────────── -->
+  <section class="pricing" id="pricing">
+    <div class="wrap">
+      <div class="pricing-head">
+        <span class="eyebrow rv">04 — Tarifs</span>
+        <h2 class="display pricing-h rv rv-d1" style="margin-top:24px">Simple. <span class="accent">Honnête.</span></h2>
+        <p class="pricing-sub rv rv-d2">
+          Un plan gratuit suffisant pour la plupart des familles. Deux plans payants pour celles qui ont besoin de plus de capacité ou de fonctions avancées. Sans engagement, résiliable depuis votre store.
+        </p>
+      </div>
+
+      <div class="price-grid rv">
+
+        <div class="plan">
+          <span class="plan-badge is-empty">Pour commencer</span>
+          <h3 class="plan-name">Gratuit</h3>
+          <p class="plan-meta">Pour découvrir l'app et organiser un foyer simple.</p>
+          <div class="plan-price">
+            <span class="num">0&nbsp;€</span>
+            <span class="unit">/ mois</span>
+          </div>
+          <ul class="plan-features">
+            <li>2 enfants maximum</li>
+            <li>1 foyer</li>
+            <li>Calendrier &amp; événements</li>
+            <li>Dépenses partagées</li>
+            <li>Documents jusqu'à 100&nbsp;Mo</li>
+            <li>2 règles, 2 seuils</li>
+            <li>Historique 30 jours</li>
+          </ul>
+          <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener" class="plan-cta">Télécharger gratuitement</a>
+        </div>
+
+        <div class="plan is-feat">
+          <span class="plan-badge">Le plus choisi</span>
+          <h3 class="plan-name">Plus</h3>
+          <p class="plan-meta">Pour les familles à plusieurs enfants ou en garde alternée.</p>
+          <div class="plan-price">
+            <span class="num">2,99&nbsp;€</span>
+            <span class="unit">/ mois</span>
+          </div>
+          <ul class="plan-features">
+            <li>Jusqu'à 3 enfants</li>
+            <li>Jusqu'à 2 foyers</li>
+            <li>Garde alternée &amp; exceptions</li>
+            <li>Documents jusqu'à 500&nbsp;Mo</li>
+            <li>5 règles, 5 seuils</li>
+            <li>Historique 6 mois</li>
+            <li>Export PDF des dépenses</li>
+          </ul>
+          <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener" class="plan-cta">Choisir Plus</a>
+        </div>
+
+        <div class="plan">
+          <span class="plan-badge" style="background:var(--green-soft);color:var(--green-deep)">Familles nombreuses</span>
+          <h3 class="plan-name">Premium</h3>
+          <p class="plan-meta">Sans limite d'enfants, capacité documents étendue, historique illimité.</p>
+          <div class="plan-price">
+            <span class="num">4,99&nbsp;€</span>
+            <span class="unit">/ mois</span>
+          </div>
+          <ul class="plan-features">
+            <li>Enfants illimités</li>
+            <li>Jusqu'à 2 foyers</li>
+            <li>Garde alternée complète</li>
+            <li>Documents jusqu'à 5&nbsp;Go</li>
+            <li>Règles &amp; seuils illimités</li>
+            <li>Historique illimité</li>
+            <li>Export PDF des dépenses</li>
+          </ul>
+          <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener" class="plan-cta">Choisir Premium</a>
+        </div>
+
+      </div>
+
+      <p class="pricing-foot rv">
+        Le prix exact s'affiche dans Google Play&nbsp;/ App Store selon votre pays. Achat in-app, pas de carte bancaire à saisir ailleurs.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── Closing ───────────────────────────────────────────── -->
+  <section class="close">
+    <div class="wrap">
+      <span class="eyebrow rv">05 — Commencez</span>
+      <h2 class="display close-h rv rv-d1" style="margin-top:32px">Téléchargez. Créez votre foyer. <span class="accent">Respirez.</span></h2>
+      <p class="close-sub rv rv-d2">Cinq minutes pour configurer, le reste pour le quotidien. Sans obligation, sans engagement, résiliable à tout moment.</p>
+      <div class="stores rv rv-d3">
+        <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener" class="store">
+          <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true">
+            <path fill="#7ED321" d="M.6.6C.2 1 0 1.6 0 2.4v19.3c0 .8.2 1.4.6 1.7l11.1-11.7L.6.6z"/>
+            <path fill="#4A90E2" d="M15.5 16l-3.8-4 3.8-4 5.4 3.1c1.4.8 1.4 2.1 0 2.8L15.5 16z"/>
+            <path fill="#F5A623" d="M11.7 12L.6 23.4c.5.5 1.3.5 2.2 0l13.1-7.4-4.2-4z"/>
+            <path fill="#EC4899" d="M11.7 12L15.9 8 2.8.6C1.9.1 1.1.1.6.6L11.7 12z"/>
+          </svg>
+          <span class="store-meta">
+            <span class="small">Disponible sur</span>
+            <span class="big">Google Play</span>
+          </span>
+        </a>
+        <span class="store is-soon" aria-disabled="true">
+          <svg width="22" height="24" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">
+            <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+          </svg>
+          <span class="store-meta">
+            <span class="small">Bientôt sur</span>
+            <span class="big">App Store</span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Footer ────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <svg class="footer-mark" viewBox="0 0 680 280" aria-hidden="true">
+            <path fill="none" stroke="#4A90E2" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"
+                  d="M 90 140 L 90 200 L 145 200 L 145 140 M 77 140 L 117.5 102 L 158 140"/>
+            <path fill="none" stroke="#7ED321" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"
+                  d="M 535 140 L 535 200 L 590 200 L 590 140 M 522 140 L 562.5 102 L 603 140"/>
+            <path fill="none" stroke="#4A90E2" stroke-width="18" stroke-linecap="round"
+                  d="M 158 170 Q 340 195 522 170"/>
+          </svg>
+          <div class="footer-name">ParentaLink</div>
+          <div class="footer-tag">L'app qui aide les familles à coordonner leur quotidien — pour toutes les configurations de foyer.</div>
+        </div>
+        <div class="footer-col">
+          <h4>Produit</h4>
+          <ul>
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a href="#pricing">Tarifs</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener">Google Play</a></li>
+            <li><a href="#" aria-disabled="true" style="opacity:.5;cursor:default">App Store · bientôt</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>À propos</h4>
+          <ul>
+            <li><a href="#why">Pourquoi</a></li>
+            <li><a href="#personas">Pour qui</a></li>
+            <li><a href="mailto:contact@parentalink.fr">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Légal</h4>
+          <ul>
+            <li><a href="#">Confidentialité</a></li>
+            <li><a href="#">Conditions</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 ParentaLink · Krispe Lab</span>
+        <span>Conçu en France</span>
       </div>
     </div>
   </footer>
 
   <script>
-    // ── Contact form → mailto
-    // ── Platform toggle style
-    function updatePlatformToggle() {
-      var android = document.getElementById('platAndroid');
-      var labelA = document.getElementById('labelAndroid');
-      var labelI = document.getElementById('labelIOS');
-      if (android.checked) {
-        labelA.style.background = 'var(--coral)';
-        labelA.style.color = '#fff';
-        labelI.style.background = 'transparent';
-        labelI.style.color = 'rgba(255,255,255,.5)';
-      } else {
-        labelI.style.background = 'var(--coral)';
-        labelI.style.color = '#fff';
-        labelA.style.background = 'transparent';
-        labelA.style.color = 'rgba(255,255,255,.5)';
-      }
-    }
-    document.getElementById('platAndroid').addEventListener('change', updatePlatformToggle);
-    document.getElementById('platIOS').addEventListener('change', updatePlatformToggle);
-    updatePlatformToggle();
-
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      var name = document.getElementById('contactName').value.trim();
-      var email = document.getElementById('contactEmail').value.trim();
-      var message = document.getElementById('contactMessage').value.trim();
-      var platform = document.querySelector('input[name="platform"]:checked').value;
-      var subject = encodeURIComponent('ParentaLink [' + platform + '] — ' + name);
-      var body = encodeURIComponent('De : ' + name + ' (' + email + ')\nPlateforme : ' + platform + '\n\n' + (message || 'Je souhaite participer à la bêta !'));
-      window.location.href = 'mailto:contact@parentalink.fr?subject=' + subject + '&body=' + body;
-    });
-
-    // ── Navbar scroll state (triggered when hero logo leaves viewport)
+    // Sticky nav state
     const nav = document.getElementById('nav');
-    const heroLogo = document.getElementById('heroLogo');
-    const logoObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        nav.classList.toggle('scrolled', !entry.isIntersecting);
-      });
-    }, { threshold: 0 });
-    logoObserver.observe(heroLogo);
+    const sentinel = document.createElement('div');
+    sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px';
+    document.body.prepend(sentinel);
+    new IntersectionObserver(
+      ([entry]) => nav.classList.toggle('is-stuck', entry.intersectionRatio < 1),
+      { threshold: [1] }
+    ).observe(sentinel);
 
-    // ── Mobile menu toggle
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    let menuOpen = false;
-
-    hamburger.addEventListener('click', () => {
-      menuOpen = !menuOpen;
-      hamburger.setAttribute('aria-expanded', menuOpen);
-      mobileMenu.classList.toggle('open', menuOpen);
-      document.body.style.overflow = menuOpen ? 'hidden' : '';
-    });
-
-    function closeMobileMenu() {
-      menuOpen = false;
-      hamburger.setAttribute('aria-expanded', false);
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    // ── Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal, .reveal-scale');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
+    // Reveal-on-scroll
+    const rvObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          rvObs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
 
-    revealEls.forEach(el => observer.observe(el));
+    // Hero text staggered reveal
+    document.querySelectorAll('.hero-text > *').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity .85s cubic-bezier(.22,1,.36,1), transform .85s cubic-bezier(.22,1,.36,1)';
+      el.style.transitionDelay = (0.05 + i * 0.09) + 's';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }));
+    });
+
+    // Show CSS fallback when image fails
+    document.querySelectorAll('.phone-fallback').forEach(p => {
+      const img = p.querySelector('img');
+      const fb = p.querySelector('.phone-fallback-content');
+      if (!img || !fb) return;
+      // If image errors, show fallback
+      img.addEventListener('error', () => { fb.style.display = ''; });
+      // If image already errored before listener attached
+      if (img.complete && img.naturalWidth === 0) { fb.style.display = ''; }
+    });
   </script>
 
 </body>

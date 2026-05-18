@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ParentaLink — La famille, sans la charge mentale</title>
-  <meta name="description" content="ParentaLink est l'app qui aide les familles à coordonner leur quotidien : calendrier, garde, dépenses, documents, règles. Disponible sur Google Play, bientôt sur l'App Store.">
+  <meta name="description" content="ParentaLink est l'app qui aide les familles à coordonner leur quotidien : calendrier, garde, dépenses, documents, règles. Disponible sur Google Play et l'App Store.">
   <meta property="og:title" content="ParentaLink — La famille, sans la charge mentale">
   <meta property="og:description" content="L'app qui aide les familles à coordonner leur quotidien — pour toutes les configurations de foyer.">
   <meta property="og:type" content="website">
@@ -316,18 +316,6 @@
       font-family: var(--font-body);
       font-size: 1rem;
       font-weight: 600;
-    }
-    .store.is-soon {
-      background: var(--bg);
-      color: var(--ink);
-      border-color: var(--line);
-      box-shadow: none;
-      cursor: default;
-    }
-    .store.is-soon:hover {
-      transform: none;
-      box-shadow: none;
-      border-color: var(--ink-light);
     }
 
     /* Hero — phone showcase */
@@ -1124,6 +1112,7 @@
       .nav-links { display: none; }
       .nav-burger { display: flex; }
       .btn-line { display: none; }
+      .nav-cta-group .btn-ink { display: none; }
     }
 
     @media (max-width: 640px) {
@@ -1152,8 +1141,7 @@
   <!-- ─── Status bar ────────────────────────────────────────── -->
   <div class="status-bar" role="status">
     <span class="status-dot"></span>
-    Disponible aujourd'hui sur Google Play · Bientôt sur l'App Store
-    <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener">Télécharger →</a>
+    Disponible sur Google Play et l'App Store
   </div>
 
   <!-- ─── Nav ───────────────────────────────────────────────── -->
@@ -1178,7 +1166,7 @@
       </ul>
       <div class="nav-cta-group">
         <a href="#features" class="btn btn-line">Découvrir</a>
-        <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener" class="btn btn-ink">
+        <a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener" class="btn btn-ink" aria-label="Télécharger sur Google Play">
           <svg width="14" height="14" viewBox="0 0 22 24" aria-hidden="true">
             <path fill="#7ED321" d="M.6.6C.2 1 0 1.6 0 2.4v19.3c0 .8.2 1.4.6 1.7l11.1-11.7L.6.6z"/>
             <path fill="#4A90E2" d="M15.5 16l-3.8-4 3.8-4 5.4 3.1c1.4.8 1.4 2.1 0 2.8L15.5 16z"/>
@@ -1186,6 +1174,12 @@
             <path fill="#EC4899" d="M11.7 12L15.9 8 2.8.6C1.9.1 1.1.1.6.6L11.7 12z"/>
           </svg>
           Google Play
+        </a>
+        <a href="https://apps.apple.com/fr/app/parentalink/id6762128606" target="_blank" rel="noopener" class="btn btn-ink" aria-label="Télécharger sur l'App Store">
+          <svg width="14" height="14" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">
+            <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+          </svg>
+          App Store
         </a>
         <button class="nav-burger" id="burger" aria-label="Menu" aria-expanded="false">
           <span></span><span></span>
@@ -1222,15 +1216,15 @@
               <span class="big">Google Play</span>
             </span>
           </a>
-          <span class="store is-soon" aria-disabled="true">
+          <a href="https://apps.apple.com/fr/app/parentalink/id6762128606" target="_blank" rel="noopener" class="store">
             <svg width="22" height="24" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">
               <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
             </svg>
             <span class="store-meta">
-              <span class="small">Bientôt sur</span>
+              <span class="small">Disponible sur</span>
               <span class="big">App Store</span>
             </span>
-          </span>
+          </a>
         </div>
       </div>
 
@@ -1685,15 +1679,15 @@
             <span class="big">Google Play</span>
           </span>
         </a>
-        <span class="store is-soon" aria-disabled="true">
+        <a href="https://apps.apple.com/fr/app/parentalink/id6762128606" target="_blank" rel="noopener" class="store">
           <svg width="22" height="24" viewBox="0 0 384 512" fill="currentColor" aria-hidden="true">
             <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
           </svg>
           <span class="store-meta">
-            <span class="small">Bientôt sur</span>
+            <span class="small">Disponible sur</span>
             <span class="big">App Store</span>
           </span>
-        </span>
+        </a>
       </div>
     </div>
   </section>
@@ -1720,7 +1714,7 @@
             <li><a href="#features">Fonctionnalités</a></li>
             <li><a href="#pricing">Tarifs</a></li>
             <li><a href="https://play.google.com/store/apps/details?id=com.parentalink.app" target="_blank" rel="noopener">Google Play</a></li>
-            <li><a href="#" aria-disabled="true" style="opacity:.5;cursor:default">App Store · bientôt</a></li>
+            <li><a href="https://apps.apple.com/fr/app/parentalink/id6762128606" target="_blank" rel="noopener">App Store</a></li>
           </ul>
         </div>
         <div class="footer-col">
